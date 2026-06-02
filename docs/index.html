@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="League Statistics is a League of Legends matchmaking fairness case study comparing ME1 and EUW1 using archived Riot match data." />
+  <title>League Statistics | Abdullah Al Wazzan</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="League Statistics home">
+      <span class="brand-mark">LS</span>
+      <span class="brand-copy">
+        <strong>League Statistics</strong>
+        <span>Abdullah Al Wazzan</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Section navigation">
+      <a href="#problem">Problem</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#findings">Findings</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#reproducibility">Reproducibility</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section reveal">
+      <div class="hero-copy">
+        <div class="pill-row">
+          <span class="pill">Project Case Study</span>
+          <span class="pill pill-soft">AI & Data Science</span>
+        </div>
+        <h1>League of Legends matchmaking fairness analysis across ME1 and EUW1.</h1>
+        <p class="lead">
+          A data-driven comparison of ranked match balance, autofill rates, rank variance, and prediction reliability using archived Riot match data.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/b3d012/LeagueStatistics" target="_blank" rel="noreferrer">View GitHub Repo</a>
+          <a class="button button-secondary" href="https://b3d012.github.io/" target="_blank" rel="noreferrer">Back to Portfolio</a>
+        </div>
+      </div>
+
+      <div class="hero-panel glass">
+        <div class="panel-header">
+          <span class="panel-kicker">Snapshot</span>
+          <span class="panel-status">Archived dataset</span>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-value" data-count="104315">104,315</span>
+            <span class="stat-label">ME1 matches</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value" data-count="129888">129,888</span>
+            <span class="stat-label">EUW1 matches</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value">2026-01-20<br />to 2026-02-17</span>
+            <span class="stat-label">UTC sample window</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value">Python</span>
+            <span class="stat-label">Analysis pipeline</span>
+          </article>
+        </div>
+        <p class="panel-note">Observed snapshot: 2026-01-20 to 2026-02-17 UTC.</p>
+      </div>
+    </section>
+
+    <section class="section reveal" id="problem">
+      <div class="section-heading">
+        <span class="eyebrow">Problem</span>
+        <h2>Why this project matters</h2>
+      </div>
+      <div class="glass content-card">
+        <p>
+          Competitive matchmaking should create games where teams have similar skill, role stability, and fair win chances.
+          This project investigates whether matchmaking quality differs between the ME1 and EUW1 regions.
+        </p>
+      </div>
+    </section>
+
+    <section class="section reveal" id="dataset">
+      <div class="section-heading">
+        <span class="eyebrow">Dataset</span>
+        <h2>What was analyzed</h2>
+      </div>
+      <div class="two-col">
+        <article class="glass content-card">
+          <h3>Archived snapshot</h3>
+          <ul class="clean-list">
+            <li>Regions: ME1 and EUW1</li>
+            <li>Match count: 104,315 ME1 and 129,888 EUW1</li>
+            <li>Outputs stored in <code>outputs_publication_analysis/</code></li>
+          </ul>
+        </article>
+        <article class="glass content-card">
+          <h3>Database structure</h3>
+          <ul class="clean-list">
+            <li><code>matches(match_id, data)</code></li>
+            <li><code>players(puuid, crawled, tier, rank, lp)</code></li>
+            <li>Parsed with a reproducible Python pipeline</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="findings">
+      <div class="section-heading">
+        <span class="eyebrow">Key Findings</span>
+        <h2>Results from the snapshot</h2>
+      </div>
+      <div class="findings-grid">
+        <article class="glass finding-card">
+          <h3>Rank variance</h3>
+          <p>In this snapshot, average match rank variance suggests ME1 was less balanced than EUW1.</p>
+          <div class="finding-metric">2.66 ME1 <span>vs</span> 2.17 EUW1</div>
+        </article>
+        <article class="glass finding-card">
+          <h3>Autofill rate</h3>
+          <p>Role stability differs substantially between regions, indicating a heavier autofill burden in ME1.</p>
+          <div class="finding-metric">39.58% ME1 <span>vs</span> 21.31% EUW1</div>
+        </article>
+        <article class="glass finding-card">
+          <h3>Prediction accuracy</h3>
+          <p>Rank-based win prediction remains useful, but the snapshot shows only moderate reliability in both regions.</p>
+          <div class="finding-metric">61.05% ME1 <span>vs</span> 63.09% EUW1</div>
+        </article>
+        <article class="glass finding-card">
+          <h3>Rank-vs-win correlation</h3>
+          <p>The relationship is weak in both regions, which indicates that rank alone is not a strong outcome signal.</p>
+          <div class="finding-metric">r = 0.0259 ME1 <span>and</span> r = -0.0205 EUW1</div>
+        </article>
+        <article class="glass finding-card finding-wide">
+          <h3>Smurf-gap estimate</h3>
+          <p>In unfair matches, the snapshot suggests a higher level gap between balanced and unbalanced games in EUW1 than ME1.</p>
+          <div class="finding-metric">13.2 levels ME1 <span>vs</span> 18.6 levels EUW1</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="methodology">
+      <div class="section-heading">
+        <span class="eyebrow">Methodology</span>
+        <h2>How the pipeline works</h2>
+      </div>
+      <div class="glass content-card">
+        <ol class="step-list">
+          <li>Collect or load regional match data.</li>
+          <li>Parse match and player records.</li>
+          <li>Compute rank spread, autofill, and balance indicators.</li>
+          <li>Compare ME1 and EUW1.</li>
+          <li>Export tables and figures.</li>
+          <li>Write conclusions from the snapshot.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section reveal" id="stack">
+      <div class="section-heading">
+        <span class="eyebrow">Tech Stack</span>
+        <h2>Tools used</h2>
+      </div>
+      <div class="pill-cloud glass">
+        <span class="tag">Python</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">Riot API</span>
+        <span class="tag">Data Cleaning</span>
+        <span class="tag">Exploratory Data Analysis</span>
+        <span class="tag">Statistical Comparison</span>
+        <span class="tag">Reproducible Scripts</span>
+        <span class="tag">GitHub Pages</span>
+      </div>
+    </section>
+
+    <section class="section reveal" id="reproducibility">
+      <div class="section-heading">
+        <span class="eyebrow">Reproducibility</span>
+        <h2>How to rerun the project</h2>
+      </div>
+      <div class="two-col">
+        <article class="glass content-card">
+          <p>
+            Runtime settings are read from environment variables so the same pipeline can be pointed at a new season or a fresh export without rewriting code.
+          </p>
+          <pre><code>RIOT_API_KEY
+LEAGUE_STATS_DATA_ROOT
+LEAGUE_STATS_OUTPUT_ROOT
+LEAGUE_STATS_SEASON_LABEL
+LEAGUE_STATS_START_DATE
+LEAGUE_STATS_END_DATE</code></pre>
+        </article>
+        <article class="glass content-card">
+          <h3>Important note</h3>
+          <p>No private Riot API key should be committed.</p>
+          <p class="muted">The repository includes a local `.env.example` template for safe setup.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="results">
+      <div class="section-heading">
+        <span class="eyebrow">Results</span>
+        <h2>Repository outputs</h2>
+      </div>
+      <div class="results-grid">
+        <a class="glass result-card" href="../outputs_publication_analysis/figures/rank_variance_by_region.png" target="_blank" rel="noreferrer">
+          <img src="../outputs_publication_analysis/figures/rank_variance_by_region.png" alt="Rank variance by region" />
+          <span>Rank variance by region</span>
+        </a>
+        <a class="glass result-card" href="../outputs_publication_analysis/figures/autofill_rate_by_region.png" target="_blank" rel="noreferrer">
+          <img src="../outputs_publication_analysis/figures/autofill_rate_by_region.png" alt="Autofill rate by region" />
+          <span>Autofill rate by region</span>
+        </a>
+        <a class="glass result-card" href="../outputs_publication_analysis/figures/prediction_accuracy_by_region.png" target="_blank" rel="noreferrer">
+          <img src="../outputs_publication_analysis/figures/prediction_accuracy_by_region.png" alt="Prediction accuracy by region" />
+          <span>Prediction accuracy by region</span>
+        </a>
+      </div>
+      <p class="muted center-note">More figures and CSV outputs are available in the repository's output folder.</p>
+    </section>
+
+    <section class="section reveal" id="cv-summary">
+      <div class="section-heading">
+        <span class="eyebrow">CV Summary</span>
+        <h2>Recruiter-friendly summary</h2>
+      </div>
+      <div class="glass content-card">
+        <p>
+          This project demonstrates applied data analysis, fairness evaluation, regional comparison, reproducible Python scripting, and clear communication of results.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Abdullah Al Wazzan</strong>
+      <span>AI &amp; Data Science</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/b3d012/LeagueStatistics" target="_blank" rel="noreferrer">GitHub Repo</a>
+      <a href="https://b3d012.github.io/" target="_blank" rel="noreferrer">Portfolio</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
