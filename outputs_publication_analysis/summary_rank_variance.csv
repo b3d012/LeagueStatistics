@@ -1,0 +1,3 @@
+region,total_matches_analyzed,average_match_rank_variance,max_disparity_found,min_disparity_found
+ME1,83210,2.66,7.48,0.42
+EUW1,128903,2.17,8.30,0.30

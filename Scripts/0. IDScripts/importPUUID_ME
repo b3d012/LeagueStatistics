@@ -1,0 +1,4 @@
+import sqlite3
+conn = sqlite3.connect('league_me1.db')
+conn.execute("INSERT OR IGNORE INTO players (puuid, crawled) VALUES ('zvzfPccpt0aeqXSJnRgerDSs1_g1ojBkpeIKfY5BrbUYYPm_F4HMsvKiPPAA96Wo7fN87w0s2LNuWg', 0)")
+conn.commit()

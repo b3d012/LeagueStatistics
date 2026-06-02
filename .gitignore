@@ -1,0 +1,24 @@
+# Local editor settings
+.vscode/
+.idea/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Archived university material and raw research data
+archive/
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Build and local clutter
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
