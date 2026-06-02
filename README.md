@@ -57,8 +57,8 @@ An example template is in [`.env.example`](./.env.example).
 Generated snapshot tables and figures live in `outputs_publication_analysis/`.
 
 - `summary_*.csv` files capture the current analysis snapshot
-- `Scripts/3. Analyzer/publication_addon_analysis.py` can rebuild the heavier publication tables from the configured database root
-- `Scripts/3. Analyzer/export_publication_figures.py` turns the snapshot CSVs into charts in `outputs_publication_analysis/figures/`
+- `Scripts/analysis/build_publication_tables.py` can rebuild the heavier publication tables from the configured database root
+- `Scripts/analysis/export_publication_figures.py` turns the snapshot CSVs into charts in `outputs_publication_analysis/figures/`
 
 Recommended figures:
 
@@ -73,12 +73,11 @@ Recommended figures:
 
 1. Copy `.env.example` to a local `.env` file and set `RIOT_API_KEY`
 2. Set `LEAGUE_STATS_DATA_ROOT` to the folder that contains the active `league_me1.db` and `league_euw1.db` files
-3. Run `python Scripts/3. Analyzer/publication_addon_analysis.py`
-4. Run `python Scripts/3. Analyzer/export_publication_figures.py`
+3. Run `python Scripts/analysis/build_publication_tables.py`
+4. Run `python Scripts/analysis/export_publication_figures.py`
 
 ## Repo Layout
 
 - `Scripts/` active source code
 - `outputs_publication_analysis/` generated tables and figures
 - `archive/university_submission/` ignored local archive for the old submission bundle and raw databases
-
