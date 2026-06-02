@@ -1,10 +1,22 @@
-import shutil
 import os
+import shutil
+import sys
 from datetime import datetime
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import get_data_root, resolve_database_path
 
 def backup_databases():
     # Define source and destination
-    source_files = ['league_me1.db', 'league_euw1.db']
+    data_root = get_data_root()
+    source_files = [
+        str(resolve_database_path('me1', data_root)),
+        str(resolve_database_path('euw1', data_root)),
+    ]
     backup_root = 'Backups'
     
     # Create timestamped folder

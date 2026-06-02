@@ -1,13 +1,23 @@
-import requests
-from riotwatcher import LolWatcher, ApiError
+import os
 import time
+import sys
+from pathlib import Path
+
+import requests
+from riotwatcher import ApiError, LolWatcher
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import require_riot_api_key
 
 # 1. SETUP
-API_KEY = "RGAPI-5d61bb4a-3913-4c74-99b8-5ab54a3879b4"  # Replace with your 24-hour key
-REGION = "europe"              # Options: americas, asia, europe, sea
-PLATFORM = "me1"              # Specific platform (e.g., na1, kr, euw1)
-GAME_NAME = "b3do"     # Example Player Name
-TAG_LINE = "1804"               # Example Tag
+API_KEY = require_riot_api_key()
+REGION = os.getenv("RIOT_REGION", "europe")  # Options: americas, asia, europe, sea
+PLATFORM = os.getenv("RIOT_PLATFORM", "me1")
+GAME_NAME = os.getenv("RIOT_GAME_NAME", "b3do")
+TAG_LINE = os.getenv("RIOT_TAG_LINE", "1804")
 
 headers = {"X-Riot-Token": API_KEY}
 

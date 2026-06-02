@@ -1,14 +1,23 @@
-from riotwatcher import LolWatcher, RiotWatcher, ApiError
+import os
+import sys
+from pathlib import Path
 
-# Use your REFRESHED 24-hour key
-API_KEY = 'RGAPI-5d61bb4a-3913-4c74-99b8-5ab54a3879b4' 
+from riotwatcher import ApiError, LolWatcher, RiotWatcher
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import require_riot_api_key
+
+API_KEY = require_riot_api_key()
 
 lol_watcher = LolWatcher(API_KEY)
 riot_watcher = RiotWatcher(API_KEY)
 
 # Region settings for Middle East
-my_platform = 'me1'
-my_cluster = 'europe'
+my_platform = os.getenv("RIOT_PLATFORM", 'me1')
+my_cluster = os.getenv("RIOT_REGION", 'europe')
 
 def get_me_rank_fixed(game_name, tag_line):
     try:

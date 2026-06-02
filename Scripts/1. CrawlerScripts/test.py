@@ -1,5 +1,13 @@
-import sqlite3
 import os
+import sqlite3
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import get_data_root, resolve_database_path
 
 def check_db(db_path, region_name):
     if not os.path.exists(db_path):
@@ -33,6 +41,6 @@ def check_db(db_path, region_name):
         print(f"Error checking {region_name}: {e}")
 
 if __name__ == "__main__":
-    # Update these paths to match your folder structure
-    check_db("ME_Crawler/league_me1.db", "MIDDLE EAST (ME1)")
-    check_db("EU_Crawler/league_euw1.db", "EUROPE WEST (EUW1)")
+    data_root = get_data_root()
+    check_db(str(resolve_database_path('me1', data_root)), "MIDDLE EAST (ME1)")
+    check_db(str(resolve_database_path('euw1', data_root)), "EUROPE WEST (EUW1)")

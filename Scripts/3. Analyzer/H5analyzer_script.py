@@ -1,7 +1,16 @@
-import sqlite3
-import numpy as np
 import collections
 import os
+import sqlite3
+import sys
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import get_data_root, resolve_database_path
 
 # Numerical mapping logic
 RANK_MAP = {'IRON': 0, 'BRONZE': 4, 'SILVER': 8, 'GOLD': 12, 'PLATINUM': 16, 'EMERALD': 20, 'DIAMOND': 24, 'MASTER': 28}
@@ -76,5 +85,6 @@ def analyze_correlation(db_path):
 
 # CRITICAL: This is the trigger that actually runs the code
 if __name__ == "__main__":
-    analyze_correlation('league_me1.db')
-    analyze_correlation('league_euw1.db')
+    data_root = get_data_root()
+    analyze_correlation(str(resolve_database_path('me1', data_root)))
+    analyze_correlation(str(resolve_database_path('euw1', data_root)))

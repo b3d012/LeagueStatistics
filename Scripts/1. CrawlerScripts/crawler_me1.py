@@ -1,12 +1,33 @@
 import sqlite3
+import sys
 import time
+from pathlib import Path
+
 from riotwatcher import LolWatcher, ApiError
 
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import (
+    get_data_root,
+    get_date_window,
+    get_season_label,
+    parse_date_to_unix_ms,
+    require_riot_api_key,
+    resolve_database_path,
+)
+
 # --- CONFIGURATION ---
-API_KEY = 'RGAPI-05ee1ae9-81a9-49b1-b89c-128ef1f59da2'
-PLATFORM = 'me1'  # Change to 'euw1' for your EU script
-CLUSTER = 'europe' 
-DB_NAME = f'league_{PLATFORM}.db'
+API_KEY = require_riot_api_key()
+PLATFORM = 'me1'
+CLUSTER = 'europe'
+SEASON_LABEL = get_season_label('current')
+DATA_ROOT = get_data_root()
+DB_NAME = str(resolve_database_path(PLATFORM, DATA_ROOT))
+START_DATE, END_DATE = get_date_window()
+START_TIME = parse_date_to_unix_ms(START_DATE) if START_DATE else None
+END_TIME = parse_date_to_unix_ms(END_DATE, end_of_day=True) if END_DATE else None
 # ---------------------
 
 watcher = LolWatcher(API_KEY)
@@ -39,7 +60,14 @@ def crawl():
             target_puuid = row[0]
             
             # PHASE 1: Only get Match IDs (1 Request)
-            match_ids = watcher.match.matchlist_by_puuid(CLUSTER, target_puuid, queue=420, count=20)
+            match_ids = watcher.match.matchlist_by_puuid(
+                CLUSTER,
+                target_puuid,
+                queue=420,
+                count=20,
+                start_time=START_TIME,
+                end_time=END_TIME,
+            )
             
             for m_id in match_ids:
                 # NEW FILTER: Ensure the match actually belongs to the target platform
@@ -77,4 +105,6 @@ def crawl():
                 time.sleep(5)
 
 if __name__ == "__main__":
+    print(f"Running season label: {SEASON_LABEL}")
+    print(f"Using database: {DB_NAME}")
     crawl()

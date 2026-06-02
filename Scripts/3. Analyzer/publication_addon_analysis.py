@@ -3,11 +3,17 @@ import json
 import ast
 import math
 import os
+import sys
 from pathlib import Path
 from collections import defaultdict, Counter
 
 import numpy as np
 import pandas as pd
+
+if str(Path(__file__).resolve().parents[2]) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from league_project_config import get_data_root, get_output_root, get_season_label, resolve_database_path
 
 # Optional statistics imports
 try:
@@ -33,15 +39,15 @@ except ImportError:
 # =========================
 
 ROOT = Path(__file__).resolve().parents[2]
-ARCHIVE_DATA_DIR = ROOT / "archive" / "university_submission" / "data"
-DATA_DIR = ARCHIVE_DATA_DIR if ARCHIVE_DATA_DIR.exists() else ROOT
+DATA_DIR = get_data_root()
+SEASON_LABEL = get_season_label("current")
 
 DATABASES = {
-    "ME1": DATA_DIR / "league_me1.db",
-    "EUW1": DATA_DIR / "league_euw1.db"
+    "ME1": resolve_database_path("me1", DATA_DIR),
+    "EUW1": resolve_database_path("euw1", DATA_DIR)
 }
 
-OUTPUT_DIR = ROOT / "outputs_publication_analysis"
+OUTPUT_DIR = get_output_root()
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 MIN_ROLE_HISTORY = 3
@@ -660,10 +666,11 @@ def main():
     summaries = []
 
     print("\nStarting publication add-on analysis...")
-    print(f"Looking for archived databases in: {DATA_DIR}\n")
+    print(f"Season label: {SEASON_LABEL}")
+    print(f"Using data root: {DATA_DIR}\n")
 
     for region, db_path in DATABASES.items():
-        rows, summary = extract_match_features(region, db_path)
+        rows, summary = extract_match_features(region, str(db_path))
         all_rows.extend(rows)
         summaries.append(summary)
 

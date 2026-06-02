@@ -1,6 +1,10 @@
 # Local editor settings
 .vscode/
 .idea/
+.env
+.env.local
+.env.*
+!.env.example
 
 # Python bytecode and caches
 __pycache__/

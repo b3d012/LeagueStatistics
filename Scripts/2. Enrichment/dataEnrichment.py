@@ -1,17 +1,39 @@
 import sqlite3
-import time
+import sys
 import threading
+import time
 from datetime import datetime, timedelta
-from riotwatcher import LolWatcher, ApiError
+from pathlib import Path
+
+from riotwatcher import ApiError, LolWatcher
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import (
+    get_data_root,
+    get_date_window,
+    get_season_label,
+    parse_date_to_unix_ms,
+    require_riot_api_key,
+    resolve_database_path,
+)
 
 # --- CONFIGURATION ---
-API_KEY = 'RGAPI-08a6878a-8fa1-47d6-aedd-2ab658bc729e' # Update this every 24 hours
+API_KEY = require_riot_api_key()
 watcher = LolWatcher(API_KEY)
+
+DATA_ROOT = get_data_root()
+SEASON_LABEL = get_season_label('current')
+START_DATE, END_DATE = get_date_window()
+START_TIME = parse_date_to_unix_ms(START_DATE) if START_DATE else None
+END_TIME = parse_date_to_unix_ms(END_DATE, end_of_day=True) if END_DATE else None
 
 # Define the two regions you are analyzing
 REGIONS = [
-    #{'platform': 'me1', 'db': 'league_me1.db', 'name': 'MIDDLE EAST'},
-    {'platform': 'euw1', 'db': 'league_euw1.db', 'name': 'EUROPE WEST'}
+    {'platform': 'me1', 'db': str(resolve_database_path('me1', DATA_ROOT)), 'name': 'MIDDLE EAST'},
+    {'platform': 'euw1', 'db': str(resolve_database_path('euw1', DATA_ROOT)), 'name': 'EUROPE WEST'}
 ]
 
 # Shared Global Trackers
@@ -126,6 +148,9 @@ def enrich_region(platform, db_path):
 
 if __name__ == "__main__":
     print(f"🚀 Master Enrichment Pipeline Started at {start_time.strftime('%H:%M:%S')}")
+    print(f"Season label: {SEASON_LABEL}")
+    if START_DATE or END_DATE:
+        print(f"Match window: {START_DATE or 'open'} -> {END_DATE or 'open'}")
     
     # Start the Dashboard on a background thread
     threading.Thread(target=display_dashboard, daemon=True).start()

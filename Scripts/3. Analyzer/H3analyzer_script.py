@@ -1,6 +1,15 @@
-import sqlite3
-import numpy as np
 import os
+import sqlite3
+import sys
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from league_project_config import get_data_root, resolve_database_path
 
 # Map Ranks to Numbers
 RANK_MAP = {
@@ -75,5 +84,6 @@ def analyze_h3_predictability(db_path):
     conn.close()
 
 if __name__ == "__main__":
-    analyze_h3_predictability('league_me1.db')
-    analyze_h3_predictability('league_euw1.db')
+    data_root = get_data_root()
+    analyze_h3_predictability(str(resolve_database_path('me1', data_root)))
+    analyze_h3_predictability(str(resolve_database_path('euw1', data_root)))
