@@ -2,6 +2,12 @@ const navLinks = [...document.querySelectorAll(".nav a")];
 const revealItems = [...document.querySelectorAll(".reveal")];
 const counters = [...document.querySelectorAll("[data-count]")];
 const topbar = document.querySelector(".topbar");
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+const lightboxCaption = document.getElementById("lightbox-caption");
+const lightboxClose = document.querySelector(".lightbox-close");
+const lightboxBackdrop = document.querySelector(".lightbox-backdrop");
+const lightboxTriggers = [...document.querySelectorAll(".js-lightbox")];
 
 const formatCount = (value) => new Intl.NumberFormat("en-US").format(value);
 
@@ -61,3 +67,43 @@ document.querySelectorAll("section[id]").forEach((section) => sectionObserver.ob
 window.addEventListener("scroll", () => {
   topbar.classList.toggle("scrolled", window.scrollY > 8);
 }, { passive: true });
+
+const openLightbox = (trigger) => {
+  const img = trigger.querySelector("img");
+  if (!img || !lightbox || !lightboxImage || !lightboxCaption) return;
+
+  lightboxImage.src = img.src;
+  lightboxImage.alt = img.alt || "";
+  lightboxCaption.textContent = trigger.dataset.caption || img.alt || "";
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+};
+
+const closeLightbox = () => {
+  if (!lightbox) return;
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  if (lightboxImage) {
+    lightboxImage.src = "";
+  }
+};
+
+lightboxTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    openLightbox(trigger);
+  });
+});
+
+[lightboxClose, lightboxBackdrop].forEach((el) => {
+  if (!el) return;
+  el.addEventListener("click", closeLightbox);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && lightbox?.classList.contains("open")) {
+    closeLightbox();
+  }
+});

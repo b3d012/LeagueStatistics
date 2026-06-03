@@ -212,15 +212,15 @@ LEAGUE_STATS_END_DATE</code></pre>
         <h2>Repository outputs</h2>
       </div>
       <div class="results-grid">
-        <a class="glass result-card" href="figures/rank_variance_by_region.png" target="_blank" rel="noreferrer">
+        <a class="glass result-card js-lightbox" href="figures/rank_variance_by_region.png" data-caption="Rank variance by region">
           <img src="figures/rank_variance_by_region.png" alt="Rank variance by region" />
           <span>Rank variance by region</span>
         </a>
-        <a class="glass result-card" href="figures/autofill_rate_by_region.png" target="_blank" rel="noreferrer">
+        <a class="glass result-card js-lightbox" href="figures/autofill_rate_by_region.png" data-caption="Autofill rate by region">
           <img src="figures/autofill_rate_by_region.png" alt="Autofill rate by region" />
           <span>Autofill rate by region</span>
         </a>
-        <a class="glass result-card" href="figures/prediction_accuracy_by_region.png" target="_blank" rel="noreferrer">
+        <a class="glass result-card js-lightbox" href="figures/prediction_accuracy_by_region.png" data-caption="Prediction accuracy by region">
           <img src="figures/prediction_accuracy_by_region.png" alt="Prediction accuracy by region" />
           <span>Prediction accuracy by region</span>
         </a>
@@ -251,6 +251,15 @@ LEAGUE_STATS_END_DATE</code></pre>
       <a href="https://b3d012.github.io/" target="_blank" rel="noreferrer">Portfolio</a>
     </div>
   </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
+    <button class="lightbox-backdrop" type="button" aria-label="Close image preview"></button>
+    <div class="lightbox-panel" role="document">
+      <button class="lightbox-close" type="button" aria-label="Close image preview">×</button>
+      <img id="lightbox-image" alt="" />
+      <p id="lightbox-caption"></p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
